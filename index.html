@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Chess</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <div class="board">
+      <div class="cell gray">&#9820;</div>
+      <div class="cell">&#9822;</div>
+      <div class="cell gray">&#9821;</div>
+      <div class="cell">&#9819;</div>
+      <div class="cell gray">&#9818;</div>
+      <div class="cell">&#9821;</div>
+      <div class="cell gray">&#9822;</div>
+      <div class="cell">&#9820;</div>
+
+      <div class="cell">&#9823;</div>
+      <div class="cell gray">&#9823;</div>
+      <div class="cell">&#9823;</div>
+      <div class="cell gray">&#9823;</div>
+      <div class="cell">&#9823;</div>
+      <div class="cell gray">&#9823;</div>
+      <div class="cell">&#9823;</div>
+      <div class="cell gray">&#9823;</div>
+
+      <div class="cell gray"></div>
+      <div class="cell"></div>
+      <div class="cell gray"></div>
+      <div class="cell"></div>
+      <div class="cell gray"></div>
+      <div class="cell"></div>
+      <div class="cell gray"></div>
+      <div class="cell"></div>
+
+      <div class="cell"></div>
+      <div class="cell gray"></div>
+      <div class="cell"></div>
+      <div class="cell gray"></div>
+      <div class="cell"></div>
+      <div class="cell gray"></div>
+      <div class="cell"></div>
+      <div class="cell gray"></div>
+
+      <div class="cell gray"></div>
+      <div class="cell"></div>
+      <div class="cell gray"></div>
+      <div class="cell"></div>
+      <div class="cell gray"></div>
+      <div class="cell"></div>
+      <div class="cell gray"></div>
+      <div class="cell"></div>
+
+      <div class="cell"></div>
+      <div class="cell gray"></div>
+      <div class="cell"></div>
+      <div class="cell gray"></div>
+      <div class="cell"></div>
+      <div class="cell gray"></div>
+      <div class="cell"></div>
+      <div class="cell gray"></div>
+
+      <div class="cell gray">&#9817;</div>
+      <div class="cell">&#9817;</div>
+      <div class="cell gray">&#9817;</div>
+      <div class="cell">&#9817;</div>
+      <div class="cell gray">&#9817;</div>
+      <div class="cell">&#9817;</div>
+      <div class="cell gray">&#9817;</div>
+      <div class="cell">&#9817;</div>
+
+      <div class="cell">&#9814;</div>
+      <div class="cell gray">&#9816;</div>
+      <div class="cell">&#9815;</div>
+      <div class="cell gray">&#9813;</div>
+      <div class="cell">&#9812;</div>
+      <div class="cell gray">&#9815;</div>
+      <div class="cell">&#9816;</div>
+      <div class="cell gray">&#9814;</div>
+    </div>
+    <script>
+      const BOARD = {
+        RN: "&#9818;",
+        RB: "&#9812;",
+        rN: "&#9819;",
+        rB: "&#9813;",
+        AN: "&#9821;",
+        AB: "&#9815;",
+        CN: "&#9822;",
+        CB: "&#9816;",
+        TN: "&#9820;",
+        TB: "&#9814;",
+        PN: "&#9823;",
+        PB: "&#9817;",
+        "   ": "",
+        "|||": "",
+      };
+      const DELAY = 1 * 1000;
+      const URI = "http://192.168.137.135/get-board";
+
+      let board = [];
+
+      function parseBoard(stringBoard) {
+        console.log(stringBoard);
+        const array = stringBoard.split(",");
+        board = [];
+        for (let i = 0; i < 8; i++) {
+          const subArray = array.splice(0, 8);
+          board.push(subArray);
+        }
+      }
+
+      function printBoard() {
+        const boardDiv = document.querySelector(".board");
+        boardDiv.innerHTML = "";
+        for (let i = 0; i < 8; i++) {
+          for (let j = 0; j < 8; j++) {
+            const isWhiteCell = (i + j) % 2;
+            const cellData = board[i][j];
+            const cell = document.createElement("div");
+            cell.classList.add("cell");
+            if (!isWhiteCell) {
+              cell.classList.add("gray");
+            }
+            cell.innerHTML = BOARD[cellData];
+            boardDiv.appendChild(cell);
+          }
+        }
+      }
+
+      setInterval(async () => {
+        const res = await fetch(URI);
+        const data = await res.text();
+        parseBoard(data);
+        printBoard();
+      }, DELAY);
+    </script>
+  </body>
+</html>
